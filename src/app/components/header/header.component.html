@@ -1,0 +1,38 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-tp">
+  <!-- Container wrapper -->
+  <div class="container-fluid">
+    <!-- Navbar brand -->
+    <a href="#" class="navbar-brand">Todo List</a>
+    <!-- Toggle button -->
+    <button
+      class="narbar-toggler"
+      type="button"
+      data-mdb-toggle="collapse"
+      data-mdb-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <i class="fas fa-bars"></i>
+    </button>
+    <!-- Collapsible wrapper -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- left links -->
+      <ul class="navbar-nav me-auto d-flex flex-row mt-3 mt-lg-0">
+        @for (header of headerItems; track $index) {
+        <li class="nav-item text-center mx-2 mx-lg-1">
+          <a
+            class="nav-link"
+            [routerLink]="header.routerLink"
+            routerLinkActive="iconActive"
+          >
+            <div><i [class]="header.icon"></i></div>
+            {{ header.label }}
+          </a>
+        </li>
+        }
+      </ul>
+    </div>
+  </div>
+</nav>

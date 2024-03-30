@@ -1,0 +1,46 @@
+@if(todo){
+
+<div class="d-flex flex-column justify-content-center text-center class1">
+  <h2 class="text-danger">Todo Details</h2>
+  <h3>Task Title: {{ todo.title }}</h3>
+  <h4>Completed: {{ todo.completed }}</h4>
+</div>
+<div class="container px-5 my-5">
+  <div class="borderClass">
+    <form id="contactForm" (ngSubmit)="updateToDo()" #form1="ngForm">
+      <div class="mb-3 d-flex">
+        <label class="form-label w-25 fw-bold" for="title">Task Title:</label>
+        <input
+          type="text"
+          class="form-control w-75"
+          placeholder="ToDo Title"
+          name="title1"
+          id="title1"
+          [(ngModel)]="todo.title"
+          required
+          pattern="[A-Z-a-z]{3,}"
+          #input1="ngModel"
+          [ngClass]="{'is-invalid': (input1.touched || input1.dirty) && input1.invalid}"
+        />
+      </div>
+      <div class="mb-3 d-flex">
+        <label class="form-label fw-bold" for="completed">Completed:</label
+        ><input
+          type="checkbox"
+          name="completed"
+          id="completed"
+          class="form-check w-50"
+          [(ngModel)]="todo.completed"
+        />
+      </div>
+      <div class="d-grid">
+        <button class="btn btn-primary btn-lg" type="submit" id="submitButton" [disabled]="form1.invalid">
+          Update
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<h1>{{input1?.errors | json}}</h1>
+}
