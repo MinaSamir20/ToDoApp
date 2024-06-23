@@ -86,5 +86,6 @@ export class TodosListComponent implements OnInit {
   async syncData(): Promise<void> {
     await this.todoService.syncData(this.apiUrl);
     this.todo = this.todoService.getLocalData();
+    localStorage.clear();
   }
 }
