@@ -21,16 +21,17 @@
       <!-- left links -->
       <ul class="navbar-nav me-auto d-flex flex-row mt-3 mt-lg-0">
         @for (header of headerItems; track $index) {
-        <li class="nav-item text-center mx-2 mx-lg-1">
-          <a
+          <li class="nav-item text-center mx-2 mx-lg-1">
+            <a
             class="nav-link"
             [routerLink]="header.routerLink"
             routerLinkActive="iconActive"
-          >
+            >
             <div><i [class]="header.icon"></i></div>
             {{ header.label }}
           </a>
         </li>
+        <div><i class="fas fa-file-earmark"></i></div>
         }
       </ul>
     </div>

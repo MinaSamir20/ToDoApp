@@ -14,6 +14,7 @@ import { ToDoService } from '../../Services/to-do.service';
 })
 export class TodosDetailsComponent implements OnInit {
   todo: ToDo | undefined;
+
   constructor(
     private route: ActivatedRoute,
     private todoService: ToDoService,

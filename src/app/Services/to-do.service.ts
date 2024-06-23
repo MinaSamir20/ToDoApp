@@ -1,7 +1,8 @@
+import { ToDo } from './../Models/to-do';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ToDo } from '../Models/to-do';
+import { __values } from 'tslib';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +11,35 @@ export class ToDoService {
   private apiUrl = 'http://localhost:3000/todos';
 
   constructor(private http: HttpClient) {}
+
+  saveDataLocally(data: ToDo): void {
+    const existingData: ToDo[] = JSON.parse(localStorage.getItem('offlineTodos') || '[]');
+    existingData.push(data);
+    localStorage.setItem('offlineTodos', JSON.stringify(existingData as ToDo[]));
+    console.log('Data saved locally');
+  }
+
+  async syncData(apiUrl: string): Promise<void> {
+    const offlineData: any = JSON.parse(localStorage.getItem('offlineTodos') || '[]');
+    if (offlineData.length > 0) {
+      try {
+        await this.http.post(apiUrl, offlineData).toPromise();
+        localStorage.removeItem('offlineTodos');
+        console.log('Data synchronized with server');
+      } catch (error) {
+        console.error('Error synchronizing data with server', error);
+      }
+    }
+  }
+
+  getLocalData(): ToDo[] {
+    return JSON.parse(localStorage.getItem('offlineTodos') || '[]') as ToDo[];
+  }
+
+
+
+
+
 
   getToDoList(): Observable<ToDo[]> {
     return this.http.get<ToDo[]>(this.apiUrl);

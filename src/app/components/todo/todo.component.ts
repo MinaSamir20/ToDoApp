@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { empty } from 'rxjs';
 
@@ -9,7 +9,12 @@ import { empty } from 'rxjs';
   templateUrl: './todo.component.html',
   styleUrl: './todo.component.scss',
 })
-export class TodoComponent {
+export class TodoComponent implements OnInit {
+  ngOnInit(): void {
+    if(window.navigator.onLine){
+      
+    }
+  }
   title: string = 'ToDo Appllication';
   img: string = 'http://cdn-icons-png.flaticon.com/512/4697/4697260.png';
 
@@ -24,6 +29,7 @@ export class TodoComponent {
       this.isNotNull = true;
     }
   }
+
   deleteTask(index: number) {
     this.tasks.splice(index, 1);
     if (this.tasks.length === 0) this.isNotNull = false;
