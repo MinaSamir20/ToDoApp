@@ -19,6 +19,7 @@ export class TodosListComponent implements OnInit {
   noFound: string = '';
 
   private apiUrl = 'http://localhost:3000/todos';
+  formData: ToDo = {} as ToDo;
 
   constructor(private todoService: ToDoService) {}
 
@@ -28,8 +29,6 @@ export class TodosListComponent implements OnInit {
       this.syncData();
     }
   }
-
-
   getToDoList() {
     this.todoService.getToDoList().subscribe((data) => {
       this.todo = data;
@@ -60,7 +59,6 @@ export class TodosListComponent implements OnInit {
     });
   }
 
-
   @HostListener('window:offline', ['$event'])
   onOffline(event: Event) {
     console.log('Went offline');
@@ -73,19 +71,18 @@ export class TodosListComponent implements OnInit {
   }
 
   saveDataLocally(): void {
-    let formData = {
+    const newTodo: ToDo = {
       id: Date.now(),
       title: this.title,
       completed: false,
     };
-    this.todo.push(formData)
-    this.todoService.saveDataLocally(formData);
+    this.todo.push(newTodo)
+    this.todoService.saveDataLocally(newTodo);
     this.title = ''; // Reset form data after saving
   }
 
   async syncData(): Promise<void> {
     await this.todoService.syncData(this.apiUrl);
     this.todo = this.todoService.getLocalData();
-    localStorage.clear();
   }
 }

@@ -13,17 +13,17 @@ export class ToDoService {
   constructor(private http: HttpClient) {}
 
   saveDataLocally(data: ToDo): void {
-    const existingData: ToDo[] = JSON.parse(localStorage.getItem('offlineTodos') || '[]');
+    const existingData = JSON.parse(localStorage.getItem('offlineTodos') || '[]');
     existingData.push(data);
-    localStorage.setItem('offlineTodos', JSON.stringify(existingData as ToDo[]));
+    localStorage.setItem('offlineTodos', JSON.stringify(existingData));
     console.log('Data saved locally');
   }
 
   async syncData(apiUrl: string): Promise<void> {
-    const offlineData: any = JSON.parse(localStorage.getItem('offlineTodos') || '[]');
+    const offlineData: ToDo[] = JSON.parse(localStorage.getItem('offlineTodos') || '[]');
     if (offlineData.length > 0) {
       try {
-        await this.http.post(apiUrl, offlineData).toPromise();
+        this.http.post<ToDo>(this.apiUrl, JSON.stringify(offlineData));
         localStorage.removeItem('offlineTodos');
         console.log('Data synchronized with server');
       } catch (error) {
@@ -48,6 +48,17 @@ export class ToDoService {
     return this.http.get<ToDo>(`${this.apiUrl}/${id}`);
   }
   createToDo(todo: ToDo): Observable<ToDo> {
+    const offlineData: ToDo[] = JSON.parse(localStorage.getItem('offlineTodos') || '[]');
+    if (offlineData.length > 0) {
+      try {
+        this.http.post<ToDo>(this.apiUrl, JSON.stringify(offlineData));
+        localStorage.removeItem('offlineTodos');
+        console.log('Data synchronized with server');
+      } catch (error) {
+        console.error('Error synchronizing data with server', error);
+      }
+    }
+
     return this.http.post<ToDo>(this.apiUrl, JSON.stringify(todo));
   }
   updateTodo(todo: ToDo): Observable<ToDo> {
