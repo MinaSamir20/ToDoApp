@@ -20,10 +20,10 @@ export class ToDoService {
   }
 
   async syncData(apiUrl: string): Promise<void> {
-    const offlineData: ToDo[] = JSON.parse(localStorage.getItem('offlineTodos') || '[]');
+    const offlineData = JSON.parse(localStorage.getItem('offlineTodos') || '[]');
     if (offlineData.length > 0) {
       try {
-        this.http.post<ToDo>(this.apiUrl, JSON.stringify(offlineData));
+        await this.http.post(apiUrl, offlineData).toPromise();
         localStorage.removeItem('offlineTodos');
         console.log('Data synchronized with server');
       } catch (error) {
@@ -33,7 +33,8 @@ export class ToDoService {
   }
 
   getLocalData(): ToDo[] {
-    return JSON.parse(localStorage.getItem('offlineTodos') || '[]') as ToDo[];
+    const localTodos = localStorage.getItem('offlineTodos');
+    return localTodos ? JSON.parse(localTodos) : [];
   }
 
 
