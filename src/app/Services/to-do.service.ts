@@ -13,17 +13,17 @@ export class ToDoService {
   constructor(private http: HttpClient) {}
 
   saveDataLocally(data: ToDo): void {
-    const existingData = JSON.parse(localStorage.getItem('offlineTodos') || '[]');
+    const existingData : ToDo[] = JSON.parse(localStorage.getItem('offlineTodos') || '[]');
     existingData.push(data);
     localStorage.setItem('offlineTodos', JSON.stringify(existingData));
     console.log('Data saved locally');
   }
 
   async syncData(apiUrl: string): Promise<void> {
-    const offlineData = JSON.parse(localStorage.getItem('offlineTodos') || '[]');
+    const offlineData : ToDo[] = JSON.parse(localStorage.getItem('offlineTodos') || '[]');
     if (offlineData.length > 0) {
       try {
-        await this.http.post(apiUrl, offlineData).toPromise();
+        await this.http.post(apiUrl, offlineData as ToDo[]).toPromise();
         localStorage.removeItem('offlineTodos');
         console.log('Data synchronized with server');
       } catch (error) {

@@ -29,7 +29,7 @@
           <h1 class="text-danger">{{ noFound }}</h1>
           }
           @else{
-          @for (todo of todo; track todo.id) {
+          @for (todo of todo; track $index) {
           <ul class="list-group list-group-horizontal rounded-0 mb-2 border-0">
             <li class="list-group-item d-flex align-items-center ps-0 pe-3 py-1 rounded-0 border-0 bg-transparent">
               <div class="form-check">
